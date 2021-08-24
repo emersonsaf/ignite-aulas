@@ -1,6 +1,6 @@
 import { RepositoryItem } from "./RepositoryItem";
 
-import { useState, useEffect, useLayoutEffect } from 'react';
+import { useState, useEffect } from 'react';
 
 import '../styles/repositories.scss'
 
