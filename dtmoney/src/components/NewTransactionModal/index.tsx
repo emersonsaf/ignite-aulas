@@ -1,11 +1,12 @@
-import { FormEvent, useState } from 'react';
+import { FormEvent, useState, useContext } from 'react';
 import Modal from 'react-modal';
-import { Container, RadioBox, TransactionTypeContainer } from './styles';
+import { TransactionsContext } from '../../TransactionsContext';
+
 import incomeImg from '../../assets/income.svg'
 import outcomeImg from '../../assets/outcome.svg'
 import closeImg from '../../assets/close.svg'
-import { api } from '../../services/api';
 
+import { Container, RadioBox, TransactionTypeContainer } from './styles';
 
 interface NewTransactionModalProps {
     isOpen: boolean,
@@ -13,19 +14,29 @@ interface NewTransactionModalProps {
 }
 
 export function NewTransactionModal({ isOpen, onRequestClose }: NewTransactionModalProps) {
-    const [value, setValue] = useState(0);
+    const { createTransaction } = useContext(TransactionsContext);
+
+    const [amount, setAmount] = useState(0);
     const [title, setTitle] = useState('');
     const [category, setCategory] = useState('');
     const [type, setType] = useState('deposit');
 
-    function handleCreateNewTransaction(event: FormEvent) {
+    async function handleCreateNewTransaction(event: FormEvent) {
         event.preventDefault();
-        const data = { title, value, category, type }
+        
+        await createTransaction({
+            title,
+            amount,
+            category,
+            type,
+        })
 
-        api.post('/transactions', data)
+        setTitle('');
+        setAmount(0);
+        setCategory('');
+        setType('deposit');
+        onRequestClose();
     }
-
-
 
     return (
         <Modal
@@ -56,8 +67,8 @@ export function NewTransactionModal({ isOpen, onRequestClose }: NewTransactionMo
                 <input
                     placeholder="Valor"
                     type="number"
-                    value={value}
-                    onChange={(e) => setValue(Number(e.target.value))}
+                    value={amount}
+                    onChange={(e) => setAmount(Number(e.target.value))}
                 />
 
                 <TransactionTypeContainer>
