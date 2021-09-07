@@ -18,18 +18,32 @@ export default NextAuth({
       const { email } = user;
 
       try {
-        await fauna.query(
+      await fauna.query(
+        q.If(
+          q.Not(
+            q.Exists(
+              q.Match(
+                q.Index('email_by_user'),
+                q.Casefold(user.email)
+              )
+            )
+          ),
           q.Create(
             q.Collection('user'),
-            { data: { email } }
+            { data: { email }}
+          ),
+          q.Get(
+            q.Match(
+              q.Index('email_by_user'),
+              q.Casefold(user.email)
+            )
           )
         )
-      }
-      catch {
+      )
+        return true;
+     } catch {
         return false;
-      }
-
-      return true
+     }
     }
   }
 })
