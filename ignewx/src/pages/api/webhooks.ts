@@ -9,7 +9,7 @@ async function buffer(readable: Readable) {
 
     for await (const chunk of readable) {
         chunks.push(
-            typeof chunk === 'string' ? Buffer.from(chunk) : chunk
+            typeof chunk === "string" ? Buffer.from(chunk) : chunk
         );
     }
 
@@ -38,7 +38,6 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
         } catch (err) {
             return res.status(400).send(`Webhook error. ${err.message}`)
         }
-
         const { type } = event
 
         if (relevantEvents.has(type)) {
@@ -49,8 +48,8 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
 
                         const checkoutSession = event.data.object as Stripe.Checkout.Session
                         await saveSubscription(
-                            checkoutSession.subscription.toString(),
                             checkoutSession.customer.toString(),
+                            checkoutSession.subscription.toString(),
                         )
                         break;
                     default:
