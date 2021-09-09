@@ -5,11 +5,11 @@ import { stripe } from "../../../services/stripe";
 export async function saveSubscription(
     customerId: string,
     subscriptionId: string,
-    createAction = false,
+    createAction = false
 ) {
     const userRef = await fauna.query(
         q.Select(
-            'ref',
+            "ref",
             q.Get(
                 q.Match(
                     q.Index('user_by_stripe_customer_id'),
@@ -18,13 +18,14 @@ export async function saveSubscription(
             )
         )
     )
-    const subscription = await stripe.subscriptions.retrieve(subscriptionId);
+
+    const subscription = await stripe.subscriptions.retrieve(subscriptionId)
 
     const subscriptionData = {
         id: subscription.id,
         userId: userRef,
         status: subscription.status,
-        price_id: subscription.items.data[0].price.id
+        price_id: subscription.items.data[0].price.id,
     }
 
     if (createAction) {
@@ -47,8 +48,7 @@ export async function saveSubscription(
                     )
                 ),
                 { data: subscriptionData }
-            )
+            ),
         )
     }
-
 }
