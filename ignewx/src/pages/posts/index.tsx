@@ -12,7 +12,7 @@ import styles from './styles.module.scss'
 type Post = {
   slug: string,
   title: string,
-  except: string,
+  excerpt: string,
   updatedAt: string,
 }
 
@@ -33,10 +33,10 @@ export default function Posts({ posts }: PostsProps) {
         <div className={styles.posts}>
           {
             posts.map(post => (
-              <a href="#">
+              <a href={post.slug} key={post.slug}>
                 <time>{post.updatedAt}</time>
                 <strong>{post.title}</strong>
-                <p>{post.except}</p>
+                <p>{post.excerpt}</p>
               </a>
             ))
           }
@@ -62,7 +62,7 @@ export const getStaticProps: GetStaticProps = async () => {
     return {
       slug: post.uid,
       title: RichText.asText(post.data.title),
-      except: post.data.content.find(content => content.type === "paragraph")?.text ?? '',
+      excerpt: post.data.content.find(content => content.type === "paragraph")?.text ?? '',
       updatedAt: new Date(post.last_publication_date).toLocaleDateString('pt-br', {
         day: '2-digit',
         month: 'long',
