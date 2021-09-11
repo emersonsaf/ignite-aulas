@@ -10,3 +10,11 @@ Atividades feitas durante o curso de ReactJS
 * TypeScript
 * Styled Components 
 * MirageJs ( Fake API ) 
+
+# IGNews
+* Blog Aplication with technologies: 
+* ReactJs
+* TypeScript
+* SASS
+* FaunaDB 
+* Stripe
