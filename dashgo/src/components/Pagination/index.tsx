@@ -18,8 +18,6 @@ export default function Pagination() {
         <PaginationItem  number={2} />
         <PaginationItem  number={3} />
         <PaginationItem  number={4} />
-
-
       </Stack>
     </Stack>
   );
